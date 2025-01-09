@@ -22,10 +22,14 @@ async def get_current_session(websocket: WebSocket, token: str):
 
 async def handle_audio_chunk(gemini_service: GeminiService, message: dict):
     try:
-        audio_data = decode_audio(message["data"])
-        await gemini_service.input_queue.put(audio_data)
+        if "data" in message:
+            audio_data = decode_audio(message["data"])
+            await gemini_service.input_queue.put(audio_data)
+        elif "text" in message:
+            text = message["text"]
+            await gemini_service.input_queue.put(text)
     except Exception as e:
-        print(f"Error decoding audio chunk: {e}")
+        print(f"Error decoding audio chunk or text: {e}")
 
 @router.websocket("/stream/{token}")
 async def websocket_endpoint(websocket: WebSocket, token: str):
@@ -48,8 +52,7 @@ async def websocket_endpoint(websocket: WebSocket, token: str):
             reconnect_attempts = 0
 
             gemini_service = GeminiService(
-                project_id=config_data[b"project_id"].decode(),
-                region=config_data[b"region"].decode(),
+                api_key=settings.API_KEY,
                 voice_name=config_data[b"voice"].decode(),
                 session_id=session_id
             )
@@ -59,7 +62,7 @@ async def websocket_endpoint(websocket: WebSocket, token: str):
             while True:
                 data = await websocket.receive_text()
                 message = json.loads(data)
-                if message["type"] == "audio_chunk":
+                if message["type"] == "audio_chunk" or message["type"] == "text":
                     await handle_audio_chunk(gemini_service, message)
 
         except WebSocketDisconnect as e:

@@ -1,8 +1,9 @@
 from pydantic import BaseModel
 
-class AudioChunk(BaseModel):
+class MediaChunk(BaseModel):
     session_id: str
-    data: str
+    data: str | None = None
+    text: str | None = None
     sequence_number: int
 
 class AudioResponse(BaseModel):

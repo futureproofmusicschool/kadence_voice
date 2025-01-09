@@ -5,7 +5,7 @@ pydantic
 pydantic-settings
 redis
 numpy
-google-generativeai
+google-genai
 httpx
 pytest
 pytest-asyncio

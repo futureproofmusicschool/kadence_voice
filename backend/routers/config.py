@@ -21,9 +21,7 @@ async def get_api_key(api_key_header: str = Depends(api_key_header)) -> str:
 async def set_config(config: Config, api_key: str = Depends(get_api_key)):
     session_id = config.session_id
     await redis_client.hset(f"config:{session_id}", mapping={
-        "project_id": config.project_id,
-        "region": config.region,
-        "voice": config.voice,
+        "voice": config.voice
     })
     await redis_client.expire(f"config:{session_id}", 1800)
     payload = {"session_id": session_id}

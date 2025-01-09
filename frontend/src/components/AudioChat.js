@@ -69,12 +69,28 @@ const AudioChat = () => {
     }
   };
 
+  const handleTextInput = async (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      const text = event.target.value;
+      sendMessage(
+        JSON.stringify({
+          type: "text",
+          session_id: sessionData.sessionId,
+          text: text,
+        })
+      );
+      event.target.value = '';
+    }
+  };
+
   return (
     <div>
       <button onClick={handleRecordButtonClick}>
         {status === "recording" ? "Stop Recording" : "Start Recording"}
       </button>
       <p>Status: {status}</p>
+      <input type="text" onKeyDown={handleTextInput} placeholder="Enter text message" />
     </div>
   );
 };

@@ -8,9 +8,9 @@ import { setupServer } from 'msw/node';
 import { SessionProvider } from '../../contexts/SessionContext';
 
 const server = setupServer(
-  rest.post('http://localhost:8000/config', (req, res, ctx) => {
-    return res(ctx.json({ session_id: 'mock_session_id', token: 'mock_token' }));
-  })
+    rest.post('http://localhost:8000/config', (req, res, ctx) => {
+        return res(ctx.json({ session_id: 'mock_session_id', token: 'mock_token' }));
+    })
 );
 
 beforeAll(() => server.listen());
@@ -25,8 +25,6 @@ test('renders ConfigForm and submits data', async () => {
         </SessionProvider>
     );
 
-    userEvent.type(screen.getByLabelText(/project id/i), 'test_project_id');
-    userEvent.selectOptions(screen.getByLabelText(/region/i), 'us-central1');
     userEvent.selectOptions(screen.getByLabelText(/voice/i), 'Puck');
     userEvent.type(screen.getByLabelText(/api key/i), 'test_api_key');
 
