@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gemini-voice-backend
+  namespace: gemini-voice-chat
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: gemini-voice-backend
+  template:
+    metadata:
+      labels:
+        app: gemini-voice-backend
+    spec:
+      containers:
+        - name: gemini-voice-backend
+          image: your-docker-registry/gemini-voice-backend:latest
+          ports:
+            - containerPort: 8000
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8000
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          env:
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: gemini-voice-secrets
+                  key: api-key
+            - name: REDIS_URL
+              value: "redis://gemini-voice-redis:6379"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: gemini-voice-secrets
+                  key: jwt-secret
