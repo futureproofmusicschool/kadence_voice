@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+python-dotenv
+pydantic
+pydantic-settings
+redis
+numpy
+google-generativeai
+httpx
+pytest
+pytest-asyncio
+pytest-mock
+websockets
+python-multipart
+starlette-exporter
+PyJWT
