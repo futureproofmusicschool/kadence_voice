@@ -2,6 +2,10 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from routers import config, stream
 from config import settings
+import os
+
+# Get port from Railway environment or use default
+PORT = int(os.getenv("PORT", "8000"))
 
 app = FastAPI(title="Gemini Voice Chat API", version=settings.APP_VERSION)
 
@@ -25,7 +29,7 @@ async def root():
 async def health_check():
     return {"status": "healthy"}
 
-# This is important for Vercel deployment
+# This is used for local development
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8000)
+    uvicorn.run("main:app", host="0.0.0.0", port=PORT, reload=True)

@@ -3,7 +3,7 @@ import json
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Depends, HTTPException, status
 import redis.asyncio as redis
 from config import settings
-from services.gemini_service import GeminiService, GeminiAPIError
+from services import GeminiService, GeminiAPIError
 from utils.jwt_utils import decode_jwt
 from utils.audio_utils import decode_audio
 
