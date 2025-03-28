@@ -5,7 +5,6 @@
   var GeminiVoiceWidget = {
     apiEndpoint: "https://kadencevoice-production.up.railway.app",
     defaultVoice: "Aoede",
-    clientToken: "3a7c6f8d2e1b4a9c8f7e6d5c4b3a2e1d",
     button: null,
     voicePanel: null,
     websocket: null,
@@ -210,7 +209,6 @@
         <div class="gemini-debug-info">Debug Info:
 Origin: ${window.location.origin}
 Path: ${window.location.pathname}
-Client Token: ${this.clientToken}
 API Endpoint: ${this.apiEndpoint}
 </div>
       `;
@@ -288,10 +286,6 @@ API Endpoint: ${this.apiEndpoint}
         };
         
         console.log("[DEBUG] Request data:", JSON.stringify(requestData));
-        console.log("[DEBUG] Request headers:", JSON.stringify({
-          'Content-Type': 'application/json',
-          'X-Client-Token': this.clientToken
-        }));
         
         // Initialize configuration with the backend
         console.log("[DEBUG] Sending request to:", `${this.apiEndpoint}/config`);
@@ -299,8 +293,7 @@ API Endpoint: ${this.apiEndpoint}
         const configResponse = await fetch(`${this.apiEndpoint}/config`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'X-Client-Token': this.clientToken // Use client token instead of API key
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify(requestData)
         });
@@ -400,9 +393,6 @@ API Endpoint: ${this.apiEndpoint}
         this.startRecording();
       }
     },
-    
-    // Other methods remain the same as in the original widget
-    // ... (rest of the methods)
     
     // Start recording audio
     startRecording: async function() {

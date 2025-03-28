@@ -24,7 +24,7 @@ async def verify_client_request(verification_token: str = Depends(APIKeyHeader(n
     )
 
 @router.post("/config", status_code=status.HTTP_201_CREATED)
-async def set_config(config: Config, client_token: str = Depends(verify_client_request)):
+async def set_config(config: Config):
     session_id = config.session_id
     
     # Store configuration and user details

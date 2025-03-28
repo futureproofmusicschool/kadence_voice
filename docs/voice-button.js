@@ -5,7 +5,6 @@
   var GeminiVoiceWidget = {
     apiEndpoint: "https://kadencevoice-production.up.railway.app", // Railway deployment URL
     defaultVoice: "Aoede", // Using only Aoede voice
-    clientToken: "3a7c6f8d2e1b4a9c8f7e6d5c4b3a2e1d", // Client verification token
     button: null,
     voicePanel: null,
     websocket: null,
@@ -254,8 +253,7 @@
         const configResponse = await fetch(`${this.apiEndpoint}/config`, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'X-Client-Token': this.clientToken // Use client token instead of API key
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             voice: this.defaultVoice,
