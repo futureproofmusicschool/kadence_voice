@@ -9,13 +9,13 @@ PORT = int(os.getenv("PORT", "8000"))
 
 app = FastAPI(title="Gemini Voice Chat API", version=settings.APP_VERSION)
 
-# Configure CORS for all origins to allow embedding on any website
+# Configure CORS for specific origin (LearnWorlds)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["https://learn.futureproofmusicschool.com"],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "X-Client-Token"],
 )
 
 app.include_router(config.router, tags=["Configuration"])
