@@ -1,0 +1,21 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "main.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "main.py"
+    }
+  ],
+  "env": {
+    "GEMINI_API_KEY": "@gemini_api_key",
+    "JWT_SECRET": "@jwt_secret",
+    "REDIS_URL": "@redis_url",
+    "CLIENT_VERIFICATION_TOKEN": "@client_verification_token"
+  }
+} 

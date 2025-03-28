@@ -1,0 +1,20 @@
+<!-- Copy and paste this code into your website's HTML -->
+<script>
+// User configuration - automatically populated with LearnWorlds variables
+window.chatbotConfig = {
+  username: "{{USER.NAME}}",
+  userId: "{{USER.ID}}",
+  currentUrl: window.location.href,
+  currentPath: window.location.pathname
+};
+
+// Gemini Voice Chat Button - Add microphone button to launch voice chat
+// All sensitive credentials are securely stored on the server
+(function(d,s,id){
+  var js,fjs=d.getElementsByTagName(s)[0];
+  if(d.getElementById(id)){return;}
+  js=d.createElement(s);js.id=id;
+  js.src="https://your-bucket.s3.amazonaws.com/voice-button.min.js"; // Replace with your hosted script URL
+  fjs.parentNode.insertBefore(js,fjs);
+}(document,"script","gemini-voice-widget-js"));
+</script> 
