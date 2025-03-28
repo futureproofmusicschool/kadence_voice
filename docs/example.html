@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kadence Voice Widget Example</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kadence Voice Widget Example</h1>
+    <p>This page demonstrates the Kadence Voice Widget in action. Look for the microphone button in the bottom right corner of the page.</p>
+    <p>Click on the microphone to start a voice conversation with Gemini AI.</p>
+    
+    <!-- Gemini Voice Chat Button -->
+    <script>
+    // Configure your variables
+    window.chatbotConfig = {
+      username: "Example User",
+      userId: "example-user-123",
+      currentUrl: window.location.href,
+      currentPath: window.location.pathname
+    };
+
+    // Load the widget directly
+    document.addEventListener('DOMContentLoaded', function() {
+        var script = document.createElement('script');
+        script.src = 'voice-button.js'; // Load from same directory
+        document.body.appendChild(script);
+    });
+    </script>
+</body>
+</html> 
