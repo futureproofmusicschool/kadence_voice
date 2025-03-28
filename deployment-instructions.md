@@ -2,12 +2,12 @@
 
 This guide will walk you through deploying the Gemini Voice Chat application and integrating it with your website.
 
-## 1. Backend Deployment on Vercel
+## 1. Backend Deployment on Railway
 
 ### Prerequisites
-- A Vercel account
+- A Railway account (sign up at [railway.app](https://railway.app))
 - A Google API key for Gemini
-- A Redis instance (Upstash Redis is recommended for Vercel)
+- A Redis instance (we're using Redis Cloud)
 
 ### Deployment Steps
 
@@ -17,36 +17,46 @@ This guide will walk you through deploying the Gemini Voice Chat application and
    cd kadence_voice
    ```
 
-2. **Set up environment variables in Vercel**
-   - `GEMINI_API_KEY`: Your Google API key for Gemini (kept secure on the server)
-   - `JWT_SECRET`: A strong random string for JWT token generation
-   - `REDIS_URL`: Your Redis connection URL (e.g., from Upstash)
-   - `CLIENT_VERIFICATION_TOKEN`: Set this to `3a7c6f8d2e1b4a9c8f7e6d5c4b3a2e1d` (or generate your own token)
-   - `APP_VERSION`: Optional, default is "1.0.0"
-
-3. **About the client verification token**
+2. **Prepare your backend files**
    
-   This implementation uses `3a7c6f8d2e1b4a9c8f7e6d5c4b3a2e1d` as the default client verification token. This token is already configured in both the backend and frontend code.
-   
-   If you want to use a different token:
-   ```bash
-   # Run this in your terminal to generate a random token
-   openssl rand -hex 16
-   ```
-   Then update:
-   - The `CLIENT_VERIFICATION_TOKEN` environment variable in Vercel
-   - The `clientToken` setting in your voice-button.js file
+   We've already added these files to make the application compatible with Railway:
+   - `backend/startup.py`: Handles the PORT environment variable correctly
+   - `backend/Procfile`: Tells Railway how to run your application
+   - `backend/railway.json`: Configuration file for Railway
 
-4. **Deploy to Vercel**
-   ```bash
-   cd backend
-   vercel
-   ```
-   
-   Follow the Vercel CLI prompts to link your project and deploy it.
+3. **Deploy to Railway**
 
-5. **Verify Deployment**
-   - Visit your deployment URL (e.g., `https://your-project.vercel.app/`)
+   a. **Create a new project** in the Railway dashboard:
+      - Log in to [Railway](https://railway.app)
+      - Click "New Project" 
+      - Select "Deploy from GitHub"
+      - Connect to your GitHub repository
+   
+   b. **Configure the service**:
+      - After the initial deployment (which might fail), click on your service
+      - Go to the "Settings" tab
+      - Find "Root Directory" and set it to `/backend`
+      - Click "Update" or "Save"
+   
+   c. **Set environment variables**:
+      - Still in the Settings tab, go to the "Variables" section
+      - Add the following variables:
+         - `GEMINI_API_KEY`: Your Google Gemini API key
+         - `JWT_SECRET`: `0804792514dd2b5b1b502a6582243cf90d9160d51da0f71d2648cb1a631af00b`
+         - `REDIS_URL`: Your Redis connection string (e.g., `redis://default:password@hostname:port`)
+         - `CLIENT_VERIFICATION_TOKEN`: `3a7c6f8d2e1b4a9c8f7e6d5c4b3a2e1d`
+   
+   d. **Deploy the application**:
+      - Railway should automatically trigger a new deployment when you save your settings
+      - Or you can manually trigger a deployment from the "Deployments" tab
+   
+   e. **Get your deployment URL**:
+      - Go to the "Settings" tab
+      - Find the "Domains" section
+      - Copy your generated domain (e.g., `https://your-app-name.up.railway.app`)
+
+4. **Verify Deployment**
+   - Visit your deployment URL
    - You should see a response with `{"status": "online", "version": "1.0.0"}`
 
 ## 2. Integrating the Voice Button on Your Website
@@ -86,7 +96,7 @@ window.chatbotConfig = {
 1. **Copy the `voice-button.js` file** from this repository.
 
 2. **Modify the configuration** at the top of the file:
-   - `apiEndpoint`: Set to your Vercel deployment URL
+   - `apiEndpoint`: Set to your Railway deployment URL
    - `clientToken`: Set to match your `CLIENT_VERIFICATION_TOKEN` environment variable
 
    Note: The application is configured to use only the 'Aoede' voice.
@@ -102,7 +112,7 @@ window.chatbotConfig = {
 
 ### API Key Protection
 The Google Gemini API key is never exposed to the client:
-- The API key is stored only as an environment variable on Vercel
+- The API key is stored only as an environment variable on Railway
 - The front-end uses a less sensitive client verification token instead
 - All API calls to Google services happen server-side
 
@@ -171,21 +181,33 @@ This application uses the 'Aoede' voice from Google's text-to-speech system. No 
    - Verify your Redis connection is working
 
 2. **"Invalid client token" error**
-   - Make sure your `CLIENT_VERIFICATION_TOKEN` environment variable is correctly set in Vercel
+   - Make sure your `CLIENT_VERIFICATION_TOKEN` environment variable is correctly set in Railway
    - Ensure the `clientToken` in voice-button.js matches exactly
 
 3. **WebSocket connection issues**
-   - Ensure Vercel function timeout is set appropriately for WebSockets
-   - Check for CORS issues in your browser console
+   - Make sure you're using `wss://` protocol for WebSocket connections to your Railway app
+   - Check Railway logs for any connection errors
 
 4. **Microphone not working**
    - Make sure your website is served over HTTPS (required for microphone access)
    - Check for microphone permissions in browser settings
 
+5. **Deployment issues on Railway**
+   - Verify that the "Root Directory" is set to `/backend`
+   - Check that all environment variables are set correctly
+   - Look for specific error messages in the Railway deployment logs
+
 ### Logs and Debugging
 
-- Check Vercel function logs for backend issues
+- Check Railway deployment logs for backend issues
 - Use browser developer console for frontend debugging
+
+## 8. Railway vs. Vercel
+
+We're using Railway instead of Vercel because:
+- Railway fully supports WebSockets, which are essential for real-time voice communication
+- Railway runs persistent services rather than serverless functions with timeout limitations
+- Railway's environment is better suited for applications that maintain long-lived connections
 
 ## Need Help?
 

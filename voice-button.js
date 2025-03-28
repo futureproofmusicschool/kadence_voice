@@ -3,7 +3,7 @@
 (function() {
   // Define a unique namespace to prevent conflicts
   var GeminiVoiceWidget = {
-    apiEndpoint: "https://your-app-name.up.railway.app", // Replace with your Railway deployment URL
+    apiEndpoint: "https://kadencevoice-production.up.railway.app", // Railway deployment URL
     defaultVoice: "Aoede", // Using only Aoede voice
     clientToken: "3a7c6f8d2e1b4a9c8f7e6d5c4b3a2e1d", // Client verification token
     button: null,
