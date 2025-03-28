@@ -9,10 +9,14 @@ PORT = int(os.getenv("PORT", "8000"))
 
 app = FastAPI(title="Gemini Voice Chat API", version=settings.APP_VERSION)
 
-# Configure CORS for specific origin (LearnWorlds)
+# Configure CORS for both LearnWorlds and GitHub Pages
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://learn.futureproofmusicschool.com"],
+    allow_origins=[
+        "https://learn.futureproofmusicschool.com", 
+        "https://futureproofmusicschool.github.io",
+        "*"  # Temporarily allow all origins for testing
+    ],
     allow_credentials=True,
     allow_methods=["GET", "POST", "OPTIONS"],
     allow_headers=["Content-Type", "X-Client-Token"],
